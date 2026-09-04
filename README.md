@@ -76,13 +76,13 @@ azure-lab/
 └── README.md
 ```
 
-Esta estructura representa el estado objetivo del bootstrap. Las carpetas y los archivos se incorporarán o normalizarán únicamente cuando corresponda a la etapa en curso.
+Esta estructura representa la base del monorepo. Cada carpeta reservada incluye documentación mínima mientras no contenga una implementación funcional.
 
 ## Estado actual
 
-El repositorio se encuentra en su fase inicial de preparación. Git ya está inicializado y existen las carpetas base para las aplicaciones, la documentación, los recursos de Kubernetes y los futuros workflows. Todavía no se implementaron servicios, dependencias, imágenes, manifiestos de Kubernetes ni pipelines de CI/CD.
+El bootstrap inicial del repositorio está completo. Se encuentran definidas la estructura base, la política de archivos ignorados, la configuración de edición y la normalización de finales de línea entre Windows y Linux.
 
-Durante el bootstrap se deberá normalizar el nombre de `apps/notas-seguras-api/` a `apps/secure-notes-api/`, crear los archivos de configuración multiplataforma definidos por la tarea y corregir `MakeFile` a la convención `Makefile`. Estas acciones no forman parte de la actualización documental de este README.
+Las aplicaciones, imágenes, manifiestos de Kubernetes y automatizaciones de CI/CD todavía no están implementados. El próximo módulo de desarrollo será `apps/movies-api`.
 
 La especificación de esta etapa está disponible en [`docs/00-repository-bootstrap.md`](docs/00-repository-bootstrap.md).
 

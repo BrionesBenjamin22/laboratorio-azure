@@ -1,0 +1,66 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!*.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account.json
+*.kubeconfig
+kubeconfig
+kubeconfig.*
+!kubeconfig.example
+
+# Kubernetes secrets and generated manifests
+kubernetes/**/secret.yaml
+kubernetes/**/secrets.yaml
+kubernetes/**/*.secret.yaml
+!kubernetes/**/*.example.yaml
+kubernetes/generated/
+
+# Go
+bin/
+*.exe
+*.test
+*.out
+coverage.out
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Editors and local tooling
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+.kombai/
+
+# Operating systems
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
