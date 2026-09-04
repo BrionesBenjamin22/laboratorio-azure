@@ -35,8 +35,8 @@ Los estados se actualizan directamente en Markdown. No se incorporará tooling a
 | Módulo | Tecnología | Tipo | Planificación |
 | --- | --- | --- | --- |
 | [Movies API](movies-api/README.md) | Go y TMDB | Stateless | Especificación revisada y tareas ejecutables disponibles. |
-| [Weather API](weather-api/README.md) | Python, FastAPI y proveedor meteorológico | Stateless | Borrador conservado; desglose pendiente. |
-| [Secure Notes API](secure-notes-api/README.md) | Python, FastAPI y PostgreSQL | Stateful | Borrador conservado; desglose pendiente. |
+| [Weather API](weather-api/README.md) | Python, FastAPI y proveedor meteorológico | Stateless | Especificación revisada y tareas ejecutables disponibles. |
+| [Secure Notes API](secure-notes-api/README.md) | Python, FastAPI y PostgreSQL | Stateful | Especificación revisada y tareas ejecutables disponibles. |
 
 ## Documentación global
 
