@@ -1,4 +1,8 @@
-# Tarea 02: Weather API
+# Borrador de planificación: Weather API
+
+Status: Draft
+
+Este documento conserva la planificación amplia original. No es una tarea ejecutable y deberá revisarse y dividirse antes del desarrollo. Consulte el [índice del módulo](README.md) y las [convenciones globales](../README.md).
 
 ## 1. Objetivo
 
@@ -19,7 +23,7 @@ Implementar:
 - normalización de unidades y condiciones;
 - caché local de corta duración;
 - endpoints de salud;
-- respuestas y errores según [`docs/README.md`](README.md).
+- respuestas y errores según las [convenciones globales](../README.md).
 
 No implementar en esta tarea:
 

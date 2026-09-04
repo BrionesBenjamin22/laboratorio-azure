@@ -1,127 +1,76 @@
-# Plan de desarrollo de módulos
+# Documentación del laboratorio
 
-## Objetivo
+## Propósito
 
-Esta carpeta contiene las especificaciones ejecutables del laboratorio. Cada documento define el alcance de un bloque de trabajo, sus restricciones, entregables y criterios de aceptación.
+Este directorio es el punto de entrada para la planificación técnica del laboratorio. La documentación se organiza por módulo para que cada cambio pueda analizarse, implementarse y validarse de forma acotada.
 
-Las tareas deben ejecutarse de forma incremental. No se debe comenzar un módulo nuevo hasta validar y cerrar el anterior.
+Las aplicaciones son cargas de trabajo educativas. La planificación debe favorecer el aprendizaje de cada tecnología y la experimentación posterior con infraestructura, sin convertir los servicios en productos innecesariamente complejos.
 
-## Orden de ejecución
+## Convención de organización
 
-| Orden | Documento | Estado | Resultado esperado |
+Los módulos utilizan nombres en minúsculas y kebab-case, alineados con sus carpetas en `apps/`:
+
+- `docs/movies-api/` corresponde a `apps/movies-api/`;
+- `docs/weather-api/` corresponde a `apps/weather-api/`;
+- `docs/secure-notes-api/` corresponde a `apps/secure-notes-api/`.
+
+Se eligió `movies-api` en lugar de `TMDBApi` porque identifica el servicio y no lo acopla nominalmente a TMDB. El proveedor externo podrá cambiar sin exigir una reorganización documental.
+
+## Estados de tareas
+
+Cada tarea o borrador declara uno de estos estados:
+
+| Estado | Significado |
+| --- | --- |
+| `Planned` | Definida y pendiente de ejecución. |
+| `In Progress` | Actualmente en ejecución. |
+| `Done` | Implementada y validada. |
+| `Blocked` | No puede continuar sin una decisión o dependencia externa. |
+| `Draft` | Contenido preliminar que todavía debe revisarse y dividirse antes de ejecutarse. |
+
+Los estados se actualizan directamente en Markdown. No se incorporará tooling adicional para administrarlos.
+
+## Módulos
+
+| Módulo | Tecnología | Tipo | Planificación |
 | --- | --- | --- | --- |
-| 0 | [`00-repository-bootstrap.md`](00-repository-bootstrap.md) | Completado | Repositorio base normalizado. |
-| 1 | [`01-movies-api.md`](01-movies-api.md) | Pendiente | API de consulta de películas desarrollada en Go. |
-| 2 | [`02-weather-api.md`](02-weather-api.md) | Pendiente | API meteorológica desarrollada en Python y FastAPI. |
-| 3 | [`03-secure-notes-api.md`](03-secure-notes-api.md) | Pendiente | API de notas privadas con autenticación y PostgreSQL. |
+| [Movies API](movies-api/README.md) | Go y TMDB | Stateless | Especificación revisada y tareas ejecutables disponibles. |
+| [Weather API](weather-api/README.md) | Python, FastAPI y proveedor meteorológico | Stateless | Borrador conservado; desglose pendiente. |
+| [Secure Notes API](secure-notes-api/README.md) | Python, FastAPI y PostgreSQL | Stateful | Borrador conservado; desglose pendiente. |
 
-La contenerización coordinada, los manifiestos de Kubernetes, las interfaces web y CI/CD se documentarán como tareas posteriores. Cada servicio debe quedar preparado para esas etapas, pero no debe adelantar recursos globales que todavía no estén definidos.
+## Documentación global
 
-## Convenciones compartidas
+- [Bootstrap inicial del repositorio](00-repository-bootstrap.md): tarea histórica de preparación del monorepo.
+- Containerización: planificación pendiente después de probar localmente las aplicaciones.
+- Kubernetes: planificación pendiente después de containerizar los servicios.
+- Observabilidad: planificación pendiente para logs, métricas y trazas en el entorno desplegado.
+- CI/CD: planificación pendiente después del primer despliegue manual.
+- Frontends: planificación independiente pendiente; las decisiones de interfaz no forman parte de los contratos backend actuales.
 
-### Contrato HTTP
+No se crean documentos vacíos para estas áreas. Se incorporarán cuando exista alcance suficiente para definir una tarea ejecutable.
+
+## Convenciones backend compartidas
 
 - Versionar los endpoints funcionales bajo `/api/v1`.
-- Reservar `/health/live` y `/health/ready` para comprobaciones de salud.
-- Utilizar JSON y nombres de campos en `snake_case`.
-- Expresar fechas y horas en UTC con formato ISO 8601.
-- Incluir un identificador de solicitud en logs y respuestas de error.
-- No exponer mensajes internos de proveedores, trazas, consultas SQL ni secretos.
+- Reservar `/health/live` y `/health/ready` para salud del proceso y preparación interna.
+- Usar JSON, campos en `snake_case` y fechas UTC en formato ISO 8601.
+- Mantener errores públicos desacoplados de proveedores y persistencia.
+- Incluir `request_id` en logs y respuestas de error.
+- No registrar credenciales, tokens, headers de autorización ni contenido privado.
+- Configurar dependencias mediante variables de entorno y documentarlas en `.env.example`.
+- Mantener timeouts y propagación de cancelación en operaciones externas.
+- Agregar dependencias y abstracciones solo cuando resuelvan una responsabilidad actual.
 
-Respuesta satisfactoria individual:
+Los listados destinados a futuros homes deberán admitir como máximo 9 elementos por página. Los historiales de cambios, cuando existan, utilizarán 3 elementos por página. Cada módulo debe documentar su semántica de paginación concreta; no se asumirá que proveedores externos usan el mismo tamaño de página.
 
-```json
-{
-  "data": {},
-  "message": "Operación realizada correctamente."
-}
-```
+## Regla de ejecución
 
-Respuesta satisfactoria paginada:
+Una tarea debe permitir que un agente:
 
-```json
-{
-  "data": [],
-  "meta": {
-    "page": 1,
-    "page_size": 9,
-    "total": 0,
-    "total_pages": 0
-  }
-}
-```
+1. inspeccione el estado existente;
+2. implemente un único incremento coherente;
+3. ejecute sus validaciones;
+4. informe cambios y limitaciones;
+5. se detenga antes de la siguiente tarea.
 
-Respuesta de error:
-
-```json
-{
-  "error": {
-    "code": "RESOURCE_UNAVAILABLE",
-    "message": "Lo sentimos. No pudimos recuperar la información. Intente nuevamente.",
-    "request_id": "identificador-de-la-solicitud",
-    "details": []
-  }
-}
-```
-
-`details` será opcional y solo podrá contener errores seguros de validación. Los listados destinados a pantallas home admitirán como máximo 9 elementos por página. Los historiales de cambios utilizarán 3 elementos por página.
-
-### Arquitectura
-
-Cada servicio debe separar, como mínimo:
-
-- configuración;
-- transporte HTTP;
-- validaciones;
-- casos de uso o servicios de aplicación;
-- modelos de dominio y contratos de transferencia;
-- integraciones externas o persistencia;
-- manejo uniforme de errores;
-- observabilidad;
-- pruebas.
-
-Las dependencias externas deben quedar detrás de interfaces propias. Ningún handler o controller debe consumir directamente un proveedor externo o ejecutar consultas de persistencia.
-
-### Configuración y seguridad
-
-- Configurar los servicios mediante variables de entorno.
-- Proveer únicamente archivos `.env.example` sin valores sensibles.
-- Validar la configuración obligatoria al iniciar y fallar con un mensaje seguro.
-- Validar y normalizar toda entrada en el límite HTTP.
-- Definir límites de longitud, rangos y valores admitidos.
-- No registrar tokens, contraseñas, claves, contenido privado ni respuestas completas de proveedores.
-- Aplicar timeouts a dependencias externas y operaciones de persistencia.
-- Evitar dependencias globales; cada aplicación administra las propias.
-
-### Observabilidad y operación
-
-- Emitir logs estructurados con nivel, fecha, servicio, operación y `request_id`.
-- Diferenciar disponibilidad del proceso y disponibilidad de sus dependencias.
-- Preparar cierre ordenado del servidor.
-- Mantener compatibilidad con Docker, variables de entorno, proxy reverso y despliegue futuro en Kubernetes.
-- No crear manifiestos Kubernetes ni pipelines globales dentro de las tareas de aplicación.
-
-### Calidad y documentación
-
-Cada módulo debe incluir:
-
-- pruebas unitarias de reglas y servicios;
-- pruebas de integración de adaptadores relevantes;
-- pruebas HTTP de los flujos principales y de error;
-- instrucciones de ejecución local;
-- contrato de endpoints y ejemplos seguros;
-- variables de entorno documentadas;
-- decisiones de seguridad y limitaciones conocidas.
-
-Al finalizar cada módulo se realizará una prueba manual y la suite backend correspondiente. El commit no debe ejecutarse automáticamente salvo autorización explícita del usuario.
-
-## Funcionalidades fuera del alcance actual
-
-- Frontends.
-- Manifiestos Kubernetes.
-- Despliegues en Azure.
-- Pipelines CI/CD.
-- Observabilidad centralizada.
-- Pruebas de carga.
-
-Estos bloques se definirán después de disponer de los servicios probados localmente.
+No se debe ejecutar una tarea marcada como `Draft`. Al finalizar un módulo se realizará una prueba manual y la suite backend correspondiente. Los commits solo se ejecutarán con autorización explícita del usuario.

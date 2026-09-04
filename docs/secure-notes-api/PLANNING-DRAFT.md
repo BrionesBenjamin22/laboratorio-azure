@@ -1,4 +1,8 @@
-# Tarea 03: Secure Notes API
+# Borrador de planificación: Secure Notes API
+
+Status: Draft
+
+Este documento conserva la planificación amplia original. No es una tarea ejecutable y deberá revisarse y dividirse antes del desarrollo. Consulte el [índice del módulo](README.md) y las [convenciones globales](../README.md).
 
 ## 1. Objetivo
 
@@ -30,7 +34,7 @@ Implementar:
 - auditoría de eventos de seguridad;
 - permisos por propietario y rol;
 - endpoints de salud;
-- respuestas según [`docs/README.md`](README.md).
+- respuestas según las [convenciones globales](../README.md).
 
 No implementar en esta tarea:
 
