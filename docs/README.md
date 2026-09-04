@@ -40,6 +40,7 @@ Los estados se actualizan directamente en Markdown. No se incorporará tooling a
 
 ## Documentación global
 
+- [Equipo de agentes](agents/README.md): responsabilidades, scopes y protocolo de coordinación para ejecutar las tareas.
 - [Bootstrap inicial del repositorio](00-repository-bootstrap.md): tarea histórica de preparación del monorepo.
 - Containerización: planificación pendiente después de probar localmente las aplicaciones.
 - Kubernetes: planificación pendiente después de containerizar los servicios.
